@@ -11,21 +11,26 @@ fn main() {
             if let Ok(text) = line {
                 print!("{} - ", text);
                 let mut first_found = false;
-                let mut last: u32 = 0;
+                let mut last: char = ' ';
+                let mut number: String = "".into();
                 for char in text.chars() {
                     if char.is_digit(RADIX) {
-                        if let Some(first) = char.to_digit(RADIX) {
+                        if let Some(_) = char.to_digit(RADIX) {
                             if !first_found {
-                                total += first;
-                                print!("{}/", first);
+                                number.push(char);
+                                first_found = true;
                             }
-                            first_found = true;
-                            last = first;
+                            last = char;
                         }
                     }
                 }
-                println!("{}", last);
-                total += last;
+                number.push(last);
+                if let Ok(integer) = number.parse::<u32>() {
+                    total += integer;
+                    println!("{}", integer);
+                } else {
+                    println!("ERROR");
+                }
             }
         }
         println!("{}", total);
