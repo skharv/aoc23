@@ -1,7 +1,7 @@
 use super::utils;
 
 const RED: u32 = 12;
-const GREEN: u32 = 12;
+const GREEN: u32 = 13;
 const BLUE: u32 = 14;
 
 struct Handful {
@@ -26,25 +26,25 @@ pub fn run() {
         }
 
         for game in games {
-            let mut red = false;
-            let mut green = false;
-            let mut blue = false;
+            let mut red = true;
+            let mut green = true;
+            let mut blue = true;
             for handful in game.handfuls {
-                if handful.red <= RED {
-                    red = true;
+                if handful.red > RED {
+                    red = false;
                 }
-                if handful.green <= GREEN {
-                    green = true;
+                if handful.green > GREEN {
+                    green = false;
                 }
-                if handful.blue <= BLUE {
-                    blue = true;
+                if handful.blue > BLUE {
+                    blue = false;
                 }
             }
             if red && green && blue {
                 total += game.id;
             }
         }
-        println!("{}", total);
+        println!("Answer: {}", total);
     } else {
         println!("file not found");
     }
