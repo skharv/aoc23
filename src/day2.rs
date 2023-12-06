@@ -18,7 +18,8 @@ struct Game {
 pub fn run() {
     if let Ok(lines) = utils::read_lines("./input/day2"){
         let mut games = Vec::<Game>::new();
-        let mut total = 0;
+        let mut p1total = 0;
+        let mut p2total = 0;
         for line in lines {
             if let Ok(text) = line {
             games.push(generate_game(&text));
@@ -29,22 +30,40 @@ pub fn run() {
             let mut red = true;
             let mut green = true;
             let mut blue = true;
+
+            let mut maxred = 0;
+            let mut maxgreen = 0;
+            let mut maxblue = 0;
+
             for handful in game.handfuls {
                 if handful.red > RED {
                     red = false;
                 }
+                if handful.red > maxred {
+                    maxred = handful.red;
+                }
+
                 if handful.green > GREEN {
                     green = false;
                 }
+                if handful.green > maxgreen {
+                    maxgreen = handful.green;
+                }
+                
                 if handful.blue > BLUE {
                     blue = false;
                 }
+                if handful.blue > maxblue {
+                    maxblue = handful.blue;
+                }
             }
+            p2total += maxred * maxgreen * maxblue;
             if red && green && blue {
-                total += game.id;
+                p1total += game.id;
             }
         }
-        println!("Answer: {}", total);
+        println!("Part 1 Answer: {}", p1total);
+        println!("Part 2 Answer: {}", p2total);
     } else {
         println!("file not found");
     }
