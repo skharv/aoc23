@@ -21,25 +21,29 @@ fn get_first_and_last_number(text: String) -> u32 {
     let array: [&str; 19] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]; 
     let mut first: (usize, u32) = (text.len(), 0); 
     let mut last: (usize, u32) = (0, 0); 
-    for number in array.iter() {
-        if let Some(index) = text.find(number) {
-            if index < first.0 {
-                println!("{}: {} < {} ", number, index, first.0);
-                first.0 = index.clone();
-                if let Ok(first_number) = number.parse::<u32>() {
-                    first.1 = first_number;
-                } else {
-                    first.1 = number_lookup(number);
+    for (char_index, _) in text.chars().enumerate() {
+        let end = &text[char_index..];
+        for number in array.iter() {
+            if let Some(index) = end.find(number) {
+                let real_index = index + char_index;
+                if real_index < first.0 {
+                    println!("{}: {} < {} ", number, real_index, first.0);
+                    first.0 = real_index;
+                    if let Ok(first_number) = number.parse::<u32>() {
+                        first.1 = first_number;
+                    } else {
+                        first.1 = number_lookup(number);
+                    }
                 }
-            }
 
-            if index >= last.0 {
-                println!("{}: {} >= {} ", number, index, last.0);
-                last.0 = index;
-                if let Ok(last_number) = number.parse::<u32>() {
-                    last.1 = last_number;
-                } else {
-                    last.1 = number_lookup(number);
+                if real_index >= last.0 {
+                    println!("{}: {} >= {} ", number, real_index, last.0);
+                    last.0 = real_index;
+                    if let Ok(last_number) = number.parse::<u32>() {
+                        last.1 = last_number;
+                    } else {
+                        last.1 = number_lookup(number);
+                    }
                 }
             }
         }
